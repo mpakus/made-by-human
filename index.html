@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>::::: made by human :::::</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Outfit', sans-serif;
+      background: linear-gradient(270deg, #ffb677, #ff8364, #ea6f19, #ffb677);
+      background-size: 800% 800%;
+      animation: gradientBG 25s ease infinite;
+      color: #333;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0 50%; }
+    }
+
+      header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 2rem 1rem;
+        flex-wrap: wrap;
+      }
+
+      .logo {
+        height: 170px;
+        margin-left: 1.5em;
+        margin-right: 1rem;
+      }
+
+      .header-text {
+        flex: 1;
+        text-align: center;
+      }
+
+      .header-text h1 {
+        color: #ea6f19;
+        font-size: 3rem;
+        margin: 0;
+      }
+
+      .header-text p {
+        font-size: 1.25rem;
+        margin-top: 0.5rem;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1rem;
+        padding: 1rem;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .card {
+        background-color: rgba(255, 255, 255, 0.9);
+        border: 1px solid #ea6f19;
+        padding: 1rem;
+        text-align: center;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s ease;
+      }
+
+      .card:hover {
+        transform: translateY(-5px);
+      }
+
+      .card img {
+        max-height: 150px;
+        width: auto;
+        margin-bottom: 0.5rem;
+      }
+
+      .card button {
+        background-color: #ea6f19;
+        border: none;
+        color: white;
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+        border-radius: 4px;
+        font-weight: bold;
+      }
+
+      .card button:hover {
+        background-color: #d95f14;
+      }
+
+      textarea.txt {
+        width: 99%;
+      }
+
+      footer {
+        text-align: center;
+        padding: 2rem 1rem;
+        font-size: 0.9rem;
+        color: #7b3f10;
+      }
+
+      a, a:visited{ color: #fff }
+      a:hover { color: #000 }
+    </style>
+  </head>
+  <body>
+    <header>
+      <img src="./images/made-by-human.png" alt="made by human" class="logo" />
+      <div class="header-text">
+        <p>Grab a banner and show you were made by human</p>
+      </div>
+    </header>
+
+    <main id="cardsGrid" class="grid"></main>
+
+    <script language="JavaScript">
+      const container = document.getElementById('cardsGrid')
+      const host = 'https://made-by-human.com'; // '.';
+
+      // cards grid
+      //      for (let i = 1; i <= 35; i++) {
+      const nums = [...Array(44)].map((_, i) => i + 1).sort(() => Math.random() - 0.5);
+      for(let i of nums) {
+        const img = `<a href="${host}"><img src="${host}/images/human${i}.png" alt="made by human" /></a>`;
+        const card = `
+          <div class="card">
+            ${img}
+            <textarea class="txt" rows="3">\n${img}</textarea>
+            <button>Copy Link</button>
+          </div>
+          `;
+
+        container.insertAdjacentHTML('beforeend', card);
+      }
+
+      // copy buttons observer
+      container.addEventListener('click', function (e) {
+        if (e.target.tagName.toLowerCase() === 'button') {
+          const card = e.target.closest('.card');
+          const textarea = card?.querySelector('textarea');
+          if (textarea) {
+            textarea.select();
+            navigator.clipboard.writeText(textarea.value).then(() => {
+              e.target.textContent = 'Copied!';
+              setTimeout(() => (e.target.textContent = 'Copy Link'), 1000);
+            });
+
+          }
+        }
+      });
+
+      // animation
+      const baseTitle = 'made by human';
+      const artChars = ['.', ':'];
+      const padLength = 5;
+
+      let left = Array(padLength).fill('.');
+      let right = Array(padLength).fill(':');
+      let toggle = true;
+
+      function nextStep(arr) {
+        const newArr = [...arr];
+        const index = Math.floor(Math.random() * arr.length);
+        const currentChar = newArr[index];
+        newArr[index] = artChars.find(c => c !== currentChar); // toggle symbol
+        return newArr;
+      }
+
+      function updateTitle() {
+        left = toggle ? nextStep(left) : left;
+        right = !toggle ? nextStep(right) : right;
+        toggle = !toggle;
+
+        document.title = `${left.join('')} ${baseTitle} ${right.join('')}`;
+      }
+
+      setInterval(updateTitle, 500);
+    </script>
+
+    <footer>
+      &copy; Made in Texas ✩ Powered by <a href="https://aomega.co">aömega</a>
+    </footer>
+  </body>
+  </html>
